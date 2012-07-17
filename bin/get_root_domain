@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-
 use strict;
 use warnings;
 
@@ -8,7 +7,7 @@ use Domain::PublicSuffix;
 my $domain_name = shift(@ARGV);
 usage('Requires a domain name to continue.') unless ( defined $domain_name );
 
-my $suffix = new Domain::PublicSuffix;
+my $suffix = Domain::PublicSuffix->new();
 
 printf( "%12s: %s\n", 'Domain', $domain_name );
 my $root_domain = $suffix->get_root_domain($domain_name);

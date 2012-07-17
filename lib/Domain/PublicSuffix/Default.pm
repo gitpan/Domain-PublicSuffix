@@ -1,8 +1,10 @@
 package Domain::PublicSuffix::Default;
+{
+  $Domain::PublicSuffix::Default::VERSION = '0.05';
+}
 use strict;
 use warnings;
-
-our $VERSION = '0.04';
+use utf8;
 
 =head1 NAME
 
@@ -17,7 +19,7 @@ Domain::PublicSuffix::Default - Default PublicSuffix data file
 =head1 DESCRIPTION
 
 This module provides a default public suffix list, as distributed by Mozilla
-at time of module release.
+at time of module release. This was last updated 2012-07-17.
 
 =head1 PUBLIC ACCESSORS
 
@@ -212,13 +214,14 @@ com.ai
 net.ai
 org.ai
 
-// al : http://www.inima.al/Domains.html
+// al : http://www.ert.gov.al/ert_alb/faq_det.html?Id=31
 al
-gov.al
-edu.al
-org.al
 com.al
+edu.al
+gov.al
+mil.al
 net.al
+org.al
 
 // am : http://en.wikipedia.org/wiki/.am
 am
@@ -260,6 +263,7 @@ aq
 e164.arpa
 in-addr.arpa
 ip6.arpa
+iris.arpa
 uri.arpa
 urn.arpa
 
@@ -273,10 +277,14 @@ asia
 // at : http://en.wikipedia.org/wiki/.at
 // Confirmed by registry <it@nic.at> 2008-06-17
 at
-gv.at
 ac.at
 co.at
+gv.at
 or.at
+
+// http://www.info.at/
+biz.at
+info.at
 
 // priv.at : http://www.nic.priv.at/
 // Submitted by registry <lendl@nic.at> 2008-06-09
@@ -294,7 +302,8 @@ tas.edu.au
 vic.edu.au
 wa.edu.au
 act.gov.au
-nsw.gov.au
+// Removed at request of Shae.Donelan@services.nsw.gov.au, 2010-03-04
+// nsw.gov.au
 nt.gov.au
 qld.gov.au
 sa.gov.au
@@ -339,11 +348,14 @@ rs.ba
 
 // bb : http://en.wikipedia.org/wiki/.bb
 bb
+biz.bb
 com.bb
 edu.bb
 gov.bb
+info.bb
 net.bb
 org.bb
+store.bb
 
 // bd : http://en.wikipedia.org/wiki/.bd
 *.bd
@@ -415,8 +427,10 @@ org.bi
 biz
 
 // bj : http://en.wikipedia.org/wiki/.bj
-// list of 2nd level tlds ?
 bj
+asso.bj
+barreau.bj
+gouv.bj
 
 // bm : http://www.bermudanic.bm/dnr-text.txt
 bm
@@ -540,6 +554,9 @@ mil.by
 // second-level domain, but it's being used as one (see www.google.com.by and
 // www.yahoo.com.by, for example), so we list it here for safety's sake.
 com.by
+
+// http://hoster.by/
+of.by
 
 // bz : http://en.wikipedia.org/wiki/.bz
 // http://www.belizenic.bz/
@@ -712,11 +729,21 @@ us.com
 uy.com
 za.com
 
+// Requested by Yngve Pettersen <yngve@opera.com> 2009-11-26
+operaunite.com
+
 // coop : http://en.wikipedia.org/wiki/.coop
 coop
 
-// cr : http://en.wikipedia.org/wiki/.cr
-*.cr
+// cr : http://www.nic.cr/niccr_publico/showRegistroDominiosScreen.do
+cr
+ac.cr
+co.cr
+ed.cr
+fi.cr
+go.cr
+or.cr
+sa.cr
 
 // cu : http://en.wikipedia.org/wiki/.cu
 cu
@@ -834,6 +861,8 @@ fi
 // completely removed.
 // TODO: Check for updates (expected to be phased out around Q1/2009)
 aland.fi
+// iki.fi : Submitted by Hannu Aronsson <haa@iki.fi> 2009-11-05
+iki.fi
 
 // fj : http://en.wikipedia.org/wiki/.fj
 *.fj
@@ -905,8 +934,16 @@ net.gg
 sch.gg
 gov.gg
 
-// gh : http://www.ghana.com/domain.htm
-*.gh
+// gh : http://en.wikipedia.org/wiki/.gh
+// see also: http://www.nic.gh/reg_now.php
+// Although domains directly at second level are not possible at the moment,
+// they have been possible for some time and may come back.
+gh
+com.gh
+edu.gh
+gov.gh
+org.gh
+mil.gh
 
 // gi : http://www.nic.gi/rules.html
 gi
@@ -1126,11 +1163,14 @@ eu.int
 io
 com.io
 
-// iq : http://en.wikipedia.org/wiki/.iq
-// no registrar website found, but google shows .gov.iq and .edu.iq websites
+// iq : http://www.cmc.iq/english/iq/iqregister1.htm
 iq
 gov.iq
 edu.iq
+mil.iq
+com.iq
+org.iq
+net.iq
 
 // ir : http://www.nic.ir/ascii/Appendix1.htm
 ir
@@ -1413,7 +1453,6 @@ sch.jo
 gov.jo
 mil.jo
 name.jo
-myname.jo
 
 // jobs : http://en.wikipedia.org/wiki/.jobs
 jobs
@@ -1421,6 +1460,7 @@ jobs
 // jp : http://en.wikipedia.org/wiki/.jp
 // http://jprs.co.jp/en/jpdomain.html
 // Submitted by registry <yone@jprs.co.jp> 2008-06-11
+// Updated by registry <yone@jprs.co.jp> 2008-12-04
 jp
 // jp organizational type names 
 ac.jp
@@ -1544,6 +1584,7 @@ or.jp
 !city.kyoto.jp
 !city.nagoya.jp
 !city.niigata.jp
+!city.okayama.jp
 !city.osaka.jp
 !city.saitama.jp
 !city.sapporo.jp
@@ -1654,6 +1695,7 @@ org.ky
 net.ky
 
 // kz : http://en.wikipedia.org/wiki/.kz
+// see also: http://www.nic.kz/rules/index.jsp
 kz
 org.kz
 edu.kz
@@ -1713,6 +1755,9 @@ ltd.lk
 assn.lk
 grp.lk
 hotel.lk
+
+// local : http://en.wikipedia.org/wiki/.local
+local
 
 // lr : http://psg.com/dns/lr/lr.txt
 // Submitted by registry <randy@psg.com> 2008-06-17
@@ -1817,7 +1862,15 @@ inf.mk
 name.mk
 
 // ml : http://www.gobin.info/domainname/ml-template.doc
-*.ml
+// see also: http://en.wikipedia.org/wiki/.ml
+ml
+com.ml
+edu.ml
+gouv.ml
+gov.ml
+net.ml
+org.ml
+presse.ml
 
 // mm : http://en.wikipedia.org/wiki/.mm
 *.mm
@@ -2419,7 +2472,22 @@ zoology.museum
 иком.museum
 
 // mv : http://en.wikipedia.org/wiki/.mv
-*.mv
+// "mv" included because, contra Wikipedia, google.mv exists.
+mv
+aero.mv
+biz.mv
+com.mv
+coop.mv
+edu.mv
+gov.mv
+info.mv
+int.mv
+mil.mv
+museum.mv
+name.mv
+net.mv
+org.mv
+pro.mv
 
 // mw : http://www.registrar.mw/
 mw
@@ -2431,6 +2499,7 @@ coop.mw
 edu.mw
 gov.mw
 int.mw
+museum.mw
 net.mw
 org.mw
 
@@ -2444,7 +2513,14 @@ edu.mx
 net.mx
 
 // my : http://www.mynic.net.my/
-*.my
+my
+com.my
+net.my
+org.my
+gov.my
+edu.my
+mil.my
+name.my
 
 // mz : http://www.gobin.info/domainname/mz-template.doc
 *.mz
@@ -2475,6 +2551,7 @@ name
 
 // nc : http://www.cctld.nc/
 nc
+asso.nc
 
 // ne : http://en.wikipedia.org/wiki/.ne
 ne
@@ -2487,6 +2564,10 @@ net
 gb.net
 se.net
 uk.net
+
+// ZaNiC names : http://www.za.net/
+// Confirmed by registry <hostmaster@nic.za.net> 2009-10-03
+za.net
 
 // nf : http://en.wikipedia.org/wiki/.nf
 nf
@@ -3315,34 +3396,25 @@ org
 // Submitted by registry <gavin.brown@centralnic.com> 2008-06-17
 ae.org
 
+// ZaNiC names : http://www.za.net/
+// Confirmed by registry <hostmaster@nic.za.net> 2009-10-03
+za.org
+
 // pa : http://www.nic.pa/
-// List with redundant entries as submitted by registry <edna.samudio@utp.ac.pa> 2008-06-18
-//*.pa
-//!nic.pa
-//!pannet.pa
-//!presidencia.pa
-//!milpolleras.pa
-//!sume911.pa
-//!root-ca.pa
-//ac.pa
-//gob.pa
-//com.pa
-//org.pa
-//sld.pa
-//edu.pa
-//net.pa
-//ing.pa
-//abo.pa
-//med.pa
-//nom.pa
-// As discussed in bug #447815 on bugzilla.mozilla.org, the list has been truncated.
-*.pa
-!nic.pa
-!pannet.pa
-!presidencia.pa
-!milpolleras.pa
-!sume911.pa
-!root-ca.pa
+// Some additional second level "domains" resolve directly as hostnames, such as
+// pannet.pa, so we add a rule for "pa".
+pa
+ac.pa
+gob.pa
+com.pa
+org.pa
+sld.pa
+edu.pa
+net.pa
+ing.pa
+abo.pa
+med.pa
+nom.pa
 
 // pe : https://www.nic.pe/InformeFinalComision.pdf
 pe
@@ -3390,7 +3462,6 @@ gok.pk
 gon.pk
 gop.pk
 gos.pk
-goa.pk
 info.pk
 
 // pl : http://www.dns.pl/english/
@@ -3445,7 +3516,6 @@ sr.gov.pl
 po.gov.pl
 pa.gov.pl
 // other functional domains
-med.pl
 ngo.pl
 irc.pl
 usenet.pl
@@ -3535,6 +3605,7 @@ rybnik.pl
 rzeszow.pl
 sanok.pl
 sejny.pl
+siedlce.pl
 slask.pl
 slupsk.pl
 sosnowiec.pl
@@ -3573,6 +3644,7 @@ zgorzelec.pl
 gda.pl
 gdansk.pl
 gdynia.pl
+med.pl
 sopot.pl
 // other geographical domains
 gliwice.pl
@@ -3639,7 +3711,13 @@ com.pt
 nome.pt
 
 // pw : http://en.wikipedia.org/wiki/.pw
-*.pw
+pw
+co.pw
+ne.pw
+or.pw
+ed.pw
+go.pw
+belau.pw
 
 // py : http://www.nic.py/faq_a.html#faq_b
 *.py
@@ -3676,15 +3754,17 @@ ac.rs
 gov.rs
 in.rs
 
-// ru : http://en.wikipedia.org/wiki/.ru
+// ru : http://www.cctld.ru/ru/docs/aktiv_8.php
+// Industry domains
 ru
 ac.ru
 com.ru
+edu.ru
+int.ru
 net.ru
 org.ru
 pp.ru
-int.ru
-// Geographic domains (http://www.ripn.net:8082/nic/dns/geo_list.html)
+// Geographical domains
 adygeya.ru
 altai.ru
 amur.ru
@@ -3730,17 +3810,17 @@ kurgan.ru
 kursk.ru
 lipetsk.ru
 magadan.ru
+mari.ru
 mari-el.ru
 marine.ru
-mari.ru
 mordovia.ru
 mosreg.ru
 msk.ru
 murmansk.ru
 nalchik.ru
 nnov.ru
-novosibirsk.ru
 nov.ru
+novosibirsk.ru
 nsk.ru
 omsk.ru
 orenburg.ru
@@ -3787,8 +3867,7 @@ yamal.ru
 yaroslavl.ru
 yekaterinburg.ru
 yuzhno-sakhalinsk.ru
-// Geographic domains registered before the adoption of the rules on the
-// second level domain registration
+// More geographical domains
 amursk.ru
 baikal.ru
 cmw.ru
@@ -3808,9 +3887,13 @@ pyatigorsk.ru
 rubtsovsk.ru
 snz.ru
 syzran.ru
-tagil.ru
 vdonsk.ru
 zgrad.ru
+// State domains
+gov.ru
+mil.ru
+// Technical domains
+test.ru
 
 // rw : http://www.nic.rw/cgi-bin/policy.pl
 rw
@@ -3824,19 +3907,15 @@ int.rw
 mil.rw
 gouv.rw
 
-// sa : http://www.saudinic.net.sa/page.php?page=1&lang=1
-// List with redundant entries as submitted by registry <sa-tld-tech-contact@nic.net.sa> 2008-06-23
-//*.sa
-//com.sa
-//net.sa
-//org.sa
-//gov.sa
-//med.sa
-//pub.sa
-//edu.sa
-//sch.sa
-// As discussed in bug #447815 on bugzilla.mozilla.org, the list has been truncated.
-*.sa
+// sa : http://www.nic.net.sa/
+com.sa
+net.sa
+org.sa
+gov.sa
+med.sa
+pub.sa
+edu.sa
+sch.sa
 
 // sb : http://www.sbnic.net.sb/
 // Submitted by registry <lee.humphries@telekom.com.sb> 2008-06-08
@@ -3947,23 +4026,31 @@ sm
 
 // sn : http://en.wikipedia.org/wiki/.sn
 sn
+art.sn
+com.sn
+edu.sn
+gouv.sn
+org.sn
+perso.sn
+univ.sn
 
 // sr : http://en.wikipedia.org/wiki/.sr
 sr
 
 // st : http://www.nic.st/html/policyrules/
 st
-gov.st
-saotome.st
-principe.st
-consulado.st
-org.st
-edu.st
-net.st
-com.st
-store.st
-mil.st
 co.st
+com.st
+consulado.st
+edu.st
+embaixada.st
+gov.st
+mil.st
+net.st
+org.st
+principe.st
+saotome.st
+store.st
 
 // su : http://en.wikipedia.org/wiki/.su
 su
@@ -3971,8 +4058,15 @@ su
 // sv : http://www.svnet.org.sv/svpolicy.html
 *.sv
 
-// sy : http://www.gobin.info/domainname/sy.doc
-*.sy
+// sy : http://en.wikipedia.org/wiki/.sy
+// see also: http://www.gobin.info/domainname/sy.doc
+sy
+edu.sy
+gov.sy
+net.sy
+mil.sy
+com.sy
+org.sy
 
 // sz : http://en.wikipedia.org/wiki/.sz
 // http://www.sispa.org.sz/
@@ -3986,6 +4080,10 @@ tc
 
 // td : http://en.wikipedia.org/wiki/.td
 td
+
+// tel: http://en.wikipedia.org/wiki/.tel
+// http://www.telnic.org/
+tel
 
 // tf : http://en.wikipedia.org/wiki/.tf
 tf
@@ -4010,17 +4108,19 @@ or.th
 tj
 ac.tj
 biz.tj
-com.tj
 co.tj
+com.tj
 edu.tj
+go.tj
+gov.tj
 int.tj
+mil.tj
 name.tj
 net.tj
+nic.tj
 org.tj
+test.tj
 web.tj
-gov.tj
-go.tj
-mil.tj
 
 // tk : http://en.wikipedia.org/wiki/.tk
 tk
@@ -4130,6 +4230,7 @@ ua
 com.ua
 edu.ua
 gov.ua
+in.ua
 net.ua
 org.ua
 // ua geo-names
@@ -4172,11 +4273,11 @@ sebastopol.ua
 sumy.ua
 te.ua
 ternopil.ua
+uzhgorod.ua
 vinnica.ua
 vn.ua
 zaporizhzhe.ua
 zp.ua
-uzhgorod.ua
 zhitomir.ua
 zt.ua
 
@@ -4197,6 +4298,7 @@ or.ug
 !icnet.uk
 !jet.uk
 !nel.uk
+!nhs.uk
 !nls.uk
 !national-library-scotland.uk
 !parliament.uk
@@ -4264,18 +4366,10 @@ wa.us
 wi.us
 wv.us
 wy.us
-// the following rules would be only valid under the geo-name, but we can't express that
-// *.*.us          cities, counties, parishes, and townships (locality.state.us)
-// !ci.*.*.us       city government agencies (subdomain under locality)
-// !town.*.*.us     town government agencies (subdomain under locality)
-// !co.*.*.us       county government agencies (subdomain under locality)
-// k12.*.us      public school districts
-// pvt.k12.*.us  private schools
-// cc.*.us       community colleges
-// tec.*.us      technical and vocational schools
-// lib.*.us      state, regional, city, and county libraries
-// state.*.us    state government agencies
-// gen.*.us      general independent entities (groups not fitting into the above categories)
+// The registrar notes several more specific domains available in each state,
+// such as state.*.us, dst.*.us, etc., but resolution of these is somewhat
+// haphazard; in some states these domains resolve as addresses, while in others
+// only subdomains are avilable, or even nothing at all.
 
 // uy : http://www.antel.com.uy/
 *.uy
@@ -4305,12 +4399,16 @@ edu.vc
 // vg : http://en.wikipedia.org/wiki/.vg
 vg
 
-// vi : http://www.nic.vi/Domain_Rules/body_domain_rules.html
+// vi : http://www.nic.vi/newdomainform.htm
+// http://www.nic.vi/Domain_Rules/body_domain_rules.html indicates some other
+// TLDs are "reserved", such as edu.vi and gov.vi, but doesn't actually say they
+// are available for registration (which they do not seem to be).
 vi
+co.vi
 com.vi
+k12.vi
+net.vi
 org.vi
-edu.vi
-gov.vi
 
 // vn : https://www.dot.vn/vnnic/vnnic/domainregistration.jsp
 vn

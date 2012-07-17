@@ -1,5 +1,15 @@
 Revision history for Domain-PublicSuffix
 
+0.05    2012-07-17 00:00 GMT
+        - Ridiculously long wait, but at least we have Dist::Zilla and GitHub.
+        - Updated default public suffix file
+        - Included patches from GAVINC:
+          - File::Spec fixes
+          - Test file for problematic domains
+          - non-TLD roots (like .co.im) are not getting flagged as RootEnable
+            when they should be
+          - Optionally allow underscores in domain
+
 0.04    2008-10-09 11:30 GMT
         - Normalized code style
         - Updated default public suffix file to latest from Mozilla

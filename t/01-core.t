@@ -1,16 +1,8 @@
-# Before `make install' is performed this script should be runnable with
-# `make test'. After `make install' it should work as `perl Domain-PublicSuffix.t'
-
-#########################
-
-# change 'tests => 1' to 'tests => last_test_to_print';
-
-use Test::More tests => 16;
+#!/usr/bin/env perl
+use Test::More;
 BEGIN { use_ok('Domain::PublicSuffix') };
 
-#########################
-
-my $ps = new Domain::PublicSuffix;
+my $ps = Domain::PublicSuffix->new();
 
 is( ref($ps), 'Domain::PublicSuffix',                       , 'create-object' );
 is( $ps->get_root_domain('google.com'), 'google.com'        , 'root-to-root-com' );
@@ -26,7 +18,7 @@ is( $ps->suffix(), 'co.uk',                                 , 'root-to-root-co-u
 is( $ps->get_root_domain('not_valid_at_all'), undef         , 'invalid-domain' );
 is( $ps->error, 'Malformed domain',                         , 'domain-error' );
 
-$ps = new Domain::PublicSuffix({ 
+$ps = Domain::PublicSuffix->new({ 
     'data_file' => 'effective_tld_names.dat'
 });
 
@@ -34,8 +26,12 @@ is( ref($ps), 'Domain::PublicSuffix',                       , 'create-external-o
 is( $ps->get_root_domain('www.domain.me'), 'domain.me'      , 'external-me' );
 is( $ps->tld(), 'me',                                       , 'external-me-tld' );
 
-$ps = new Domain::PublicSuffix({ 
+$ps = Domain::PublicSuffix->new({
     'dataFile' => 'effective_tld_names.dat'
 });
 is( $ps->getRootDomain('google.com'), 'google.com'          , 'compatibility' );
 is( $ps->tld(), 'com',                                      , 'compatibility-tld' );
+
+done_testing();
+
+1;

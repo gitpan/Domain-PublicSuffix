@@ -1,21 +1,23 @@
 package Domain::PublicSuffix;
-use base 'Class::Accessor::Fast';
+{
+  $Domain::PublicSuffix::VERSION = '0.05';
+}
 use strict;
 use warnings;
+use base 'Class::Accessor::Fast';
 
 use Data::Validate::Domain ();
 use Domain::PublicSuffix::Default ();
 use File::Spec ();
 
-our $VERSION = '0.04';
-
 __PACKAGE__->mk_accessors(qw/
-    data_file
-    tld_tree
-    error
-    root_domain
-    tld
-    suffix
+	data_file
+	domain_allow_underscore
+	tld_tree
+	error
+	root_domain
+	tld
+	suffix
 /);
 
 =head1 NAME
@@ -26,8 +28,8 @@ Domain::PublicSuffix - Parse a domain down to root
 
  use Domain::PublicSuffix;
 
- my $suffix = new Domain::PublicSuffix ({
-     'data_file' => '/tmp/effective_tld_names.dat'
+ my $suffix = Domain::PublicSuffix->new({
+	 'data_file' => '/tmp/effective_tld_names.dat'
  });
  my $root = $suffix->get_root_domain('www.google.com');
  # $root now contains "google.com"
@@ -81,29 +83,44 @@ Returns the true DNS tld of the last parsed domain. For the domain
 
 =over 4
 
-=item new ({ optional data_file })
+=item new ({ optional arguments })
 
 Instantiate a PublicSuffix object. It is best to instantiate an object
 and continue calling get_root_domain instead of continually recreating the
 object, as the data file is read and parsed on instantiation.
 
-Can take a data_file argument inside of a hashref, as a fully qualified path,
-to override the effective_tld_names.dat file.
+Can take a hashref of arguments:
+
+=over 4
+
+=item data_file 
+
+A fully qualified path, to override the effective_tld_names.dat file.
+
+=item domain_allow_underscore
+
+A flag to indicate that underscores should be allowed in hostnames
+(contra to the RFCs). Default: undef.
+
+=back
 
 =back
 
 =cut
 
 sub new {
-    my ( $class, @args ) = @_;
-    
-    my $self = $class->SUPER::new(@args);
-    if ( $args[0] and ref($args[0]) eq 'HASH' and $args[0]->{'dataFile'} ) {
-        $self->data_file( $args[0]->{'dataFile'} );
-    }
-    $self->_parse_data_file();
-    
-    return $self;
+	my ( $class, @args ) = @_;
+	
+	my $self = $class->SUPER::new(@args);
+
+	# Compatibility fix
+	if ( $args[0] and ref($args[0]) eq 'HASH' and $args[0]->{'dataFile'} ) {
+		$self->data_file( $args[0]->{'dataFile'} );
+	}
+
+	$self->_parse_data_file();
+	
+	return $self;
 }
 
 =over 4
@@ -123,7 +140,7 @@ sub get_root_domain {
 	
 	# Clear meta properties
 	foreach ( qw/tld suffix root_domain error/ ) {
-	    undef( $self->{$_} );
+		undef( $self->{$_} );
 	}
 	
 	# Check if domain is valid
@@ -206,53 +223,52 @@ sub _parse_data_file {
 	my ( $self ) = @_;
 	
 	$self->{'tld_tree'} = {};
-    my $data_stream_ref;
-    
-    # Find an effective_tld_names.dat file
-    my @tld_lines;
-    my $dat;
-    if ( defined $self->data_file and -e $self->data_file ) {
-        open( $dat, '<', $self->data_file )
-            or die "Cannot open \'" . $self->data_file . "\': " . $!;
-        @tld_lines = <$dat>;
-        close($dat);
-        $data_stream_ref = \@tld_lines;
-        
-    } else {
-        my @paths = (
-            File::Spec->catfile(qw/ etc /),
-            File::Spec->catpath(qw/ etc /),
-            File::Spec->catpath(qw/ usr etc /),
-            File::Spec->catpath(qw/ usr local etc /),
-            File::Spec->catpath(qw/ opt local etc /),
-        );
-        foreach my $path (@paths) {
-            $path = File::Spec->catfile( $path, "effective_tld_names.dat" );
-            if ( -e $path ) {
-    	        open( $dat, '<', $path )
-    	            or die "Cannot open \'" . $path . "\': " . $!;
-    	        @tld_lines = <$dat>;
-    	        close($dat);
-	            $data_stream_ref = \@tld_lines;
-    	        last;
-            }
-        }
-    }
+	my $data_stream_ref;
+	
+	# Find an effective_tld_names.dat file
+	my @tld_lines;
+	my $dat;
+	if ( defined $self->data_file and -e $self->data_file ) {
+		open( $dat, '<', $self->data_file )
+			or die "Cannot open \'" . $self->data_file . "\': " . $!;
+		@tld_lines = <$dat>;
+		close($dat);
+		$data_stream_ref = \@tld_lines;
+		
+	} else {
+		my @paths = (
+			File::Spec->catdir(File::Spec->rootdir, qw/ etc /),
+			File::Spec->catdir(File::Spec->rootdir, qw/ usr etc /),
+			File::Spec->catdir(File::Spec->rootdir, qw/ usr local etc /),
+			File::Spec->catdir(File::Spec->rootdir, qw/ opt local etc /),
+		);
+		foreach my $path (@paths) {
+			$path = File::Spec->catfile( $path, "effective_tld_names.dat" );
+			if ( -e $path ) {
+				open( $dat, '<', $path )
+					or die "Cannot open \'" . $path . "\': " . $!;
+				@tld_lines = <$dat>;
+				close($dat);
+				$data_stream_ref = \@tld_lines;
+				last;
+			}
+		}
+	}
 
-    # If we haven't found one, load the default
-    unless ( defined $data_stream_ref ) {
-	    $data_stream_ref = Domain::PublicSuffix::Default::retrieve();
-    }
-    
+	# If we haven't found one, load the default
+	unless ( defined $data_stream_ref ) {
+		$data_stream_ref = Domain::PublicSuffix::Default::retrieve();
+	}
+	
 	foreach ( @{$data_stream_ref} ) {
 		chomp;
-		
 		# Remove comments, skip if full line comment, remove if on-line comment
 		next if ( /^\// or /^[ \t]*?$/ );
 		s/\s.*//;
 		
 		# Break down by dots
 		my @domain_array = split( /\./, $_ );
+		warn scalar @domain_array if ($a);
 		my $last = $self->tld_tree;
 		
 		if (scalar(@domain_array) == 1) {
@@ -270,6 +286,7 @@ sub _parse_data_file {
 			next if (!$sub);
 			
 			$last->{$sub} = {} unless ( defined $last->{$sub} );
+			$last->{$sub}->{'RootEnable'} = 1 if ( scalar @domain_array == 0 );
 			$last = $last->{$sub};
 		}
 	}
@@ -279,45 +296,22 @@ sub _validate_domain {
 	my ($self, $domain) = @_;
 	
 	my $is_valid = Data::Validate::Domain::is_domain( 
-	    $domain, 
-	    {
-	        'domain_private_tld' => qr/^[a-z0-9]+$/ 
-	    }
+		$domain, 
+		{
+			'domain_allow_underscore'   => $self->domain_allow_underscore,
+			'domain_private_tld'        => qr/^[a-z0-9]+$/,
+		}
 	);
-	return 1 if ($is_valid);
-	return 0;
+	return $is_valid;
 }
 
 
 ### Compatibility
 
-=head1 COMPATIBILITY
-
-For version 0.04, Domain::PublicSuffix went through some code normalization,
-causing most methods to undergo a name change. The following methods are
-provided to maintain compatibility with older version, but new scripts and
-applications should not use these methods.
-
-=over 4
-
-=item getRootDomain
-
-=item dataFile
-
-=item rootDomain
-
-=item _parseDataFile
-
-=item _validateDomain
-
-=back
-
-=cut
-
 sub _parseDataFile {
-    my ($self) = @_;
-    
-    return $self->_parse_data_file();
+	my ($self) = @_;
+	
+	return $self->_parse_data_file();
 }
 sub getRootDomain {
 	my ( $self, $domain ) = @_;
@@ -332,15 +326,15 @@ sub _validateDomain {
 }
 
 sub dataFile {
-    my ( $self, $data_file ) = @_;
-    
-    return $self->data_file($data_file);
+	my ( $self, $data_file ) = @_;
+	
+	return $self->data_file($data_file);
 }
 
 sub rootDomain {
-    my ( $self, $root_domain ) = @_;
-    
-    return $self->root_domain($root_domain);
+	my ( $self, $root_domain ) = @_;
+	
+	return $self->root_domain($root_domain);
 }
 
 =head1 SEE ALSO
@@ -361,6 +355,7 @@ L<http://publicsuffix.org/>
 
 =back
 
+
 =head1 BUGS
 
 Please report any bugs or feature requests to C<bug-domain-publicsuffix at rt.cpan.org>,
@@ -368,11 +363,12 @@ or through the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue
 I will be notified, and then you'll automatically be notified of progress on
 your bug as I make changes.
 
+
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc Domain::PublicSuffix
+	perldoc Domain::PublicSuffix
 
 You can also look for information at:
 
@@ -396,9 +392,17 @@ L<http://search.cpan.org/dist/Domain-PublicSuffix>
 
 =back
 
+
+=head1 CONTRIBUTORS
+
+gavinc: Gavin Carr <gavinc@cpan.org>
+
+jwieland: Jason Wieland <jwieland@cpan.org>
+
+
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2008 Nicholas Melnick, C<nick at abstractwankery.com>.
+Copyright 2008-12 Nicholas Melnick, C<nick at abstractwankery.com>.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

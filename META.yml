@@ -1,0 +1,20 @@
+---
+abstract: 'Parse a domain down to root'
+author:
+  - 'Nicholas Melnick <nick@abstractwankery.com>'
+build_requires: {}
+configure_requires:
+  ExtUtils::MakeMaker: 6.30
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 4.300020, CPAN::Meta::Converter version 2.120921'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Domain-PublicSuffix
+requires:
+  Class::Accessor::Fast: 0
+  Data::Validate::Domain: 0
+  File::Spec: 0
+  Test::More: 0.88
+version: 0.05

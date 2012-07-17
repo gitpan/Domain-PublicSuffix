@@ -1,18 +1,56 @@
-use 5.008008;
-use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
-WriteMakefile(
-    NAME              => 'Domain::PublicSuffix',
-    VERSION_FROM      => 'lib/Domain/PublicSuffix.pm', # finds $VERSION
-    PREREQ_PM         => {
-        'Test::More'                => 0,
-        'Data::Validate::Domain'    => 0,
-        'Class::Accessor::Fast'     => 0,
-        'File::Spec'                => 0,
-    },
-    EXE_FILES         => [ 'bin/get_root_domain' ],
-    ($] >= 5.005 ?
-      (ABSTRACT_FROM  => 'lib/Domain/PublicSuffix.pm', # retrieve abstract from module
-       AUTHOR         => 'Nicholas Melnick <nick@abstractwankery.com>') : ()),
+
+use strict;
+use warnings;
+
+
+
+use ExtUtils::MakeMaker 6.30;
+
+
+
+my %WriteMakefileArgs = (
+  "ABSTRACT" => "Parse a domain down to root",
+  "AUTHOR" => "Nicholas Melnick <nick\@abstractwankery.com>",
+  "BUILD_REQUIRES" => {},
+  "CONFIGURE_REQUIRES" => {
+    "ExtUtils::MakeMaker" => "6.30"
+  },
+  "DISTNAME" => "Domain-PublicSuffix",
+  "EXE_FILES" => [
+    "bin/get_root_domain"
+  ],
+  "LICENSE" => "perl",
+  "NAME" => "Domain::PublicSuffix",
+  "PREREQ_PM" => {
+    "Class::Accessor::Fast" => 0,
+    "Data::Validate::Domain" => 0,
+    "File::Spec" => 0,
+    "Test::More" => "0.88"
+  },
+  "VERSION" => "0.05",
+  "test" => {
+    "TESTS" => "t/*.t"
+  }
 );
+
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
+  my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};
+  my $pp = $WriteMakefileArgs{PREREQ_PM};
+  for my $mod ( keys %$br ) {
+    if ( exists $pp->{$mod} ) {
+      $pp->{$mod} = $br->{$mod} if $br->{$mod} > $pp->{$mod};
+    }
+    else {
+      $pp->{$mod} = $br->{$mod};
+    }
+  }
+}
+
+delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
+  unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
+
+WriteMakefile(%WriteMakefileArgs);
+
+
+
