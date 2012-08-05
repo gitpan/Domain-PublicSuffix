@@ -1,6 +1,6 @@
 package Domain::PublicSuffix;
 {
-  $Domain::PublicSuffix::VERSION = '0.06';
+  $Domain::PublicSuffix::VERSION = '0.07';
 }
 use strict;
 use warnings;
@@ -400,7 +400,7 @@ L<http://search.cpan.org/dist/Domain-PublicSuffix>
 
 =head1 CONTRIBUTORS
 
-dgk: Daniel Kahn Gillmor
+dkg: Daniel Kahn Gillmor
 
 gavinc: Gavin Carr
 

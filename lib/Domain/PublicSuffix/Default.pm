@@ -1,6 +1,6 @@
 package Domain::PublicSuffix::Default;
 {
-  $Domain::PublicSuffix::Default::VERSION = '0.06';
+  $Domain::PublicSuffix::Default::VERSION = '0.07';
 }
 use strict;
 use warnings;
