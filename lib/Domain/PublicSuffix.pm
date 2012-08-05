@@ -1,6 +1,6 @@
 package Domain::PublicSuffix;
 {
-  $Domain::PublicSuffix::VERSION = '0.05';
+  $Domain::PublicSuffix::VERSION = '0.06';
 }
 use strict;
 use warnings;
@@ -45,11 +45,11 @@ The Mozilla PublicSuffix file is an open source, fully documented format that
 shows absolute root TLDs, primarily for Mozilla's browser products to be able
 to determine how far a cookie's security boundaries go.
 
-This module will attempt to search etc directories in /usr, /usr/local, and
-/opt/local for the effective_tld_names.dat file. If a file is not found, a
-default file is loaded from Domain::PublicSuffix::Default, which is current at
-the time of the module's release. You can override the data file path by
-giving the new() method a 'data_file' argument.
+This module will attempt to search etc directories in /usr/share/publicsuffix,
+/usr, /usr/local, and /opt/local for the effective_tld_names.dat file. If a file
+is not found, a default file is loaded from Domain::PublicSuffix::Default, which
+is current at the time of the module's release. You can override the data file
+path by giving the new() method a 'data_file' argument.
 
 When creating a new PublicSuffix object, the module will load the data file as
 specified, and use the internal structure to parse each domain sent to the
@@ -83,7 +83,7 @@ Returns the true DNS tld of the last parsed domain. For the domain
 
 =over 4
 
-=item new ({ optional arguments })
+=item new(\%arguments)
 
 Instantiate a PublicSuffix object. It is best to instantiate an object
 and continue calling get_root_domain instead of continually recreating the
@@ -125,7 +125,7 @@ sub new {
 
 =over 4
 
-=item get_root_domain ( $domain )
+=item get_root_domain( $domain )
 
 Given a fully qualified domain name, return the parsed root domain name.
 Returns undefined if an error occurs parsing the given domain, and fills
@@ -237,6 +237,7 @@ sub _parse_data_file {
 		
 	} else {
 		my @paths = (
+			File::Spec->catdir(File::Spec->rootdir, qw/ usr share publicsuffix /),
 			File::Spec->catdir(File::Spec->rootdir, qw/ etc /),
 			File::Spec->catdir(File::Spec->rootdir, qw/ usr etc /),
 			File::Spec->catdir(File::Spec->rootdir, qw/ usr local etc /),
@@ -341,9 +342,13 @@ sub rootDomain {
 
 =over 4
 
+=item * GitHub
+
+L<http://www.github.com/nmelnick/Domain-PublicSuffix>
+
 =item * Current List: 
 
-L<http://tinyurl.com/4tgwb9> [mxr.mozilla.org]
+L<http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1> [mxr.mozilla.org]
 
 =item * Mozilla Documentation: 
 
@@ -395,9 +400,11 @@ L<http://search.cpan.org/dist/Domain-PublicSuffix>
 
 =head1 CONTRIBUTORS
 
-gavinc: Gavin Carr <gavinc@cpan.org>
+dgk: Daniel Kahn Gillmor
 
-jwieland: Jason Wieland <jwieland@cpan.org>
+gavinc: Gavin Carr
+
+jwieland: Jason Wieland
 
 
 =head1 COPYRIGHT & LICENSE
