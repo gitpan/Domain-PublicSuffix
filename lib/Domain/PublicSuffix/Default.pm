@@ -1,6 +1,6 @@
 package Domain::PublicSuffix::Default;
 {
-  $Domain::PublicSuffix::Default::VERSION = '0.08';
+  $Domain::PublicSuffix::Default::VERSION = '0.09';
 }
 use strict;
 use warnings;
@@ -19,7 +19,7 @@ Domain::PublicSuffix::Default - Default PublicSuffix data file
 =head1 DESCRIPTION
 
 This module provides a default public suffix list, as distributed by Mozilla
-at time of module release. This was last updated 2012-08-05.
+at time of module release. This was last updated 2013-03-18.
 
 =head1 PUBLIC ACCESSORS
 
@@ -1107,13 +1107,14 @@ tozsde.hu
 utazas.hu
 video.hu
 
-// id : http://en.wikipedia.org/wiki/.id
-// see also: https://register.pandi.or.id/
+// id : https://register.pandi.or.id/
 id
 ac.id
+biz.id
 co.id
 go.id
 mil.id
+my.id
 net.id
 or.id
 sch.id

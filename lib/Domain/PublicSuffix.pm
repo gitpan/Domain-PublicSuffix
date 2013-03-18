@@ -1,6 +1,6 @@
 package Domain::PublicSuffix;
 {
-  $Domain::PublicSuffix::VERSION = '0.08';
+  $Domain::PublicSuffix::VERSION = '0.09';
 }
 use strict;
 use warnings;
@@ -165,7 +165,7 @@ sub get_root_domain {
 	
 	while ( !$self->suffix and scalar(@domain_array) > 0 ) {
 		my $sub = pop(@domain_array);
-		next if (!$sub);
+		next if (! defined $sub);
 		
 		# check if $sub.$last is a root
 		if ( defined $last->{$sub} and scalar(keys %{$last->{$sub}}) == 0 ) {
